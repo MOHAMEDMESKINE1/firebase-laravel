@@ -8,12 +8,12 @@ use App\Http\Controllers\FireBaseController;
 
 
 
-
 Route::controller(FireBaseController::class)->group(function () {
 
     Route::get('firebase', 'index')->name('fireBase');
     
-    Route::get('verify', 'verify')->name('verify');
+    // Route::get('verify', 'verify')->name('verify');
+    Route::post('verify', 'verify')->name('verify');
 
 });
 Route::get('/', function () {

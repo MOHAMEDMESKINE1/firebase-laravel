@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import auth from '../firebase.js'; // Import your Firebase configuration from a separate file
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
@@ -19,13 +19,24 @@ onMounted(() => {
   }, auth);
 });
 
+const form = useForm({
+  phoneNumber:'',
+  token:''
+})
+
+
 // Function to sign in with phone number
 const signInWithPhone = async () => {
   try {
-    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber.value, recaptchaVerifier);
+    const confirmationResult = await signInWithPhoneNumber(auth, form.phoneNumber, recaptchaVerifier);
     const verificationCode = prompt('Please enter the verification code', '');
     const result = await confirmationResult.confirm(verificationCode);
     console.log('User signed in:', result.user);
+   
+    form.token = result.user.accessToken
+
+    form.post(route('verify'));
+
   } catch (error) {
     errorMessage.value = error.message;
     console.error('Phone authentication error:', error);
@@ -33,7 +44,6 @@ const signInWithPhone = async () => {
 };
 
 </script>
- 
 
 <template>
     <Head title="Dashboard" />
@@ -57,7 +67,7 @@ const signInWithPhone = async () => {
                             <h2 class="text-2xl font-semibold mb-3">Phone Authentication</h2>
                             <div class="form-group ">
                             <label for="phoneNumber" class="my-2">Phone Number:</label> <br>
-                            <input type="text" id="phoneNumber" v-model="phoneNumber" placeholder="Enter phone number" class="w-full   rounded      ">
+                            <input type="text" id="phoneNumber" v-model="form.phoneNumber" placeholder="Enter phone number" class="w-full   rounded      ">
                             <div class="error-message text-red-500">{{ errorMessage }}</div>
 
                             </div>
