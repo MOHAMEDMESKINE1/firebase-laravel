@@ -1,19 +1,37 @@
 <?php
 
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FireBaseController;
+use App\Http\Controllers\MailCoashController;
 
+Route::controller(MailCoashController::class)->group(function () {
+
+    Route::get('data-list', 'index')->name('subscribers-list');
+    Route::get('user', 'getUser')->name('getUser');
+    // Route::get('campaigns', 'getCampaigns')->name('getCampaigns');
+    Route::get('sends', 'getSends')->name('getSends');
+    Route::get('sendEmail', 'sendEmail')->name('sendEmail');
+    Route::get('subscriber', 'subscriber')->name('subscriber');
+    Route::get('search-subscribers', 'searchSubscribers')->name('searchSubscribers');
+    Route::get('confirm-subscriber', 'confirmSubscriber')->name('confirmSubscriber');
+    Route::get('unsubscribe-subscriber', 'unsubscribeSubscriber')->name('unsubscribeSubscriber');
+    Route::get('delete-subscriber', 'deleteSubscriber')->name('deleteSubscriber');
+    Route::get('campaign', 'campaign')->name('campaign');
+    Route::get('email-list', 'emailList')->name('emailList');
+
+});
 
 
 Route::controller(FireBaseController::class)->group(function () {
 
     Route::get('firebase', 'index')->name('fireBase');
     
-    // Route::get('verify', 'verify')->name('verify');
     Route::post('verify', 'verify')->name('verify');
+
 
 });
 Route::get('/', function () {
@@ -26,7 +44,15 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    
+    $response = Http::withToken("GNjA7Db3UObJPeUaVYneJieu5jzZu0peLdjAy8Kda5460535")
+         ->get("https://mohamed-meskine.mailcoach.app/api/sends");
+
+         $sents = $response->json();
+
+    return Inertia::render('Dashboard', [
+        "sents"=>$sents
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

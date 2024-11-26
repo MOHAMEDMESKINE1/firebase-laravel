@@ -14,7 +14,8 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    // 'default' => env('MAIL_MAILER', 'mailcoach'),
+    'default' =>'mailcoach',
 
     /*
     |--------------------------------------------------------------------------
@@ -36,6 +37,14 @@ return [
     */
 
     'mailers' => [
+
+        'mailcoach' => 
+        [
+            'transport' => 'mailcoach',
+            'domain' => 'mohamed-meskine.mailcoach.app',
+            'token' => 'GNjA7Db3UObJPeUaVYneJieu5jzZu0peLdjAy8Kda5460535',
+
+        ],
 
         'smtp' => [
             'transport' => 'smtp',
@@ -94,7 +103,7 @@ return [
                 'postmark',
             ],
         ],
-
+        
     ],
 
     /*
