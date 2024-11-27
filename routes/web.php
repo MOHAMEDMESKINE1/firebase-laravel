@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FireBaseController;
 use App\Http\Controllers\MailCoashController;
+use App\Http\Controllers\OpenAiController;
 
 Route::controller(MailCoashController::class)->group(function () {
 
@@ -24,8 +25,16 @@ Route::controller(MailCoashController::class)->group(function () {
     Route::get('email-list', 'emailList')->name('emailList');
 
 });
+// open ai
+Route::controller(OpenAiController::class)->group(function () {
+
+    Route::get('open-ai', 'index')->name('openAi');
+    
+    
 
 
+});
+// firebase
 Route::controller(FireBaseController::class)->group(function () {
 
     Route::get('firebase', 'index')->name('fireBase');
