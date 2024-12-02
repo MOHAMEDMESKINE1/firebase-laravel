@@ -23,6 +23,8 @@ Route::controller(MailCoashController::class)->group(function () {
     Route::get('campaign', 'campaign')->name('campaign');
     Route::get('email-list', 'emailList')->name('emailList');
 
+    Route::get('notify', 'createNotification')->name('createNotification');
+
 });
 
 

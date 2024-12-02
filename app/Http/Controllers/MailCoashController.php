@@ -19,7 +19,7 @@ class MailCoashController extends Controller
      * This method retrieves and displays the subscribers of a specific email list,
      * details of the email list, and campaigns associated with it using the Mailcoach SDK.
      */
-    
+
     public function index()
     {
         echo '<h1>Subscribers</h1>';
@@ -37,14 +37,26 @@ class MailCoashController extends Controller
 
         $campaigns = Mailcoach::campaigns();
         dump($campaigns);
-       
+
         echo '<h1>Specific Campaign by ID</h1>';
 
         $campaigns = Mailcoach::campaign('6bd47109-5c00-4279-9a76-5402d04bff3e');
         dump($campaigns);
     }
 
-    
+    public function createNotification()
+    {
+        // notify()->success('This is a success message!', 'Success');
+        // notify()->error('This is a success error!', 'Error');
+        // connectify('success', 'Connection Found', 'Success Message Here');
+        // connectify('error', 'Connection Error', 'Error Message Here');
+        // drakify('error');
+        // smilify('success', 'You are successfully reconnected');
+        // emotify('success', 'You are awesome, your data was successfully created');
+        notify()->preset('user-deleted');
+        // dd($data);
+        return redirect()->route('dashboard'); // Replace with your Inertia page route
+    }
 
     /**
      * Retrieve a list of all sent emails.
@@ -52,15 +64,15 @@ class MailCoashController extends Controller
      * This method uses the Mailcoach API to retrieve a list of all sent emails.
      * The list is then dumped to the screen.
      */
-    public function getSends(){
+    public function getSends()
+    {
+        notify()->success('Welcome to Laravel Notify ⚡️');
 
-        $response = Http::withToken("GNjA7Db3UObJPeUaVYneJieu5jzZu0peLdjAy8Kda5460535")
-         ->get("https://mohamed-meskine.mailcoach.app/api/sends");
+        $response = Http::withToken('GNjA7Db3UObJPeUaVYneJieu5jzZu0peLdjAy8Kda5460535')->get('https://mohamed-meskine.mailcoach.app/api/sends');
 
-         $sends = $response->json();
-         
+        $sends = $response->json();
+
         dd($sends);
-        
     }
     /**
      * Retrieve the user associated with the API token.
@@ -69,15 +81,13 @@ class MailCoashController extends Controller
      * API token. The user is then dumped to the screen.
      */
 
-    public function getUser(){
+    public function getUser()
+    {
+        $response = Http::withToken('GNjA7Db3UObJPeUaVYneJieu5jzZu0peLdjAy8Kda5460535')->get('https://mohamed-meskine.mailcoach.app/api/user');
 
-        $response = Http::withToken("GNjA7Db3UObJPeUaVYneJieu5jzZu0peLdjAy8Kda5460535")
-         ->get("https://mohamed-meskine.mailcoach.app/api/user");
-
-         $user = $response->json();
+        $user = $response->json();
 
         dd($user);
-        
     }
     /**
      * Send an email to a list of subscribers
@@ -240,7 +250,7 @@ class MailCoashController extends Controller
     {
         $campaigns = Mailcoach::campaigns();
 
-        dd($campaigns) ;
+        dd($campaigns);
     }
     public function campaign()
     {
@@ -272,5 +282,4 @@ class MailCoashController extends Controller
             return 'Failed to create campaign: ' . $e->getMessage();
         }
     }
-
 }
