@@ -7,6 +7,13 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FireBaseController;
 use App\Http\Controllers\MailCoashController;
+use App\Http\Controllers\PdfController;
+
+Route::controller(PdfController::class)->group(function () {
+
+    Route::get('pdf', 'index')->name('pdf');
+    Route::get('export-pdf', 'exportPdf')->name('exportPdf');
+});
 
 Route::controller(MailCoashController::class)->group(function () {
 
